@@ -16,10 +16,17 @@ namespace WebApplication3
 
         protected void btn_submit_Click(object sender, EventArgs e)
         {
-            float area = float.Parse(room_w.Value) * float.Parse(room_h.Value);
-            string desc =area+" m^2 "+ floor_type.Value+" döşəmə vurulacaq.";
-            float total = area * (float.Parse(floor_type_price.Value)+ float.Parse(floor_color_price.Value)) +int.Parse(master_count.Value)* float.Parse(master_salary.Value);
-            Response.Redirect("Result.aspx?area=" + area+"&desc="+ desc + "&total="+total+"&color="+floor_color.Value.Replace("#",""));
+            IRoomMaintenanceManager manager = new RoomMaintenanceManager();
+            Request request = new Request();
+            request.RoomW = float.Parse(room_w.Value);
+            request.RoomH = float.Parse(room_h.Value);
+            request.FloorType = floor_type.Value;
+            request.FloorTypePrice = float.Parse(floor_type_price.Value);
+            request.FloorColor = floor_color.Value.Replace("#", "");
+            request.FloorColorProce = float.Parse(floor_color_price.Value);
+            request.MasterCount = int.Parse(master_count.Value);
+            request.MasterSalary = float.Parse(master_salary.Value);
+            Response.Redirect(manager.GetResult(request));
         }
 
     }
